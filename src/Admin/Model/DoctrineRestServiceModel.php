@@ -528,7 +528,6 @@ class DoctrineRestServiceModel implements EventManagerAwareInterface, ServiceMan
     /**
      * Generate the controller service name from the module and resource name
      *
-     * @param  string $module
      * @param  string $resourceName
      * @return string
      */
@@ -551,6 +550,7 @@ class DoctrineRestServiceModel implements EventManagerAwareInterface, ServiceMan
     public function createResourceClass($resourceName, NewDoctrineServiceEntity $details)
     {
         $module  = $this->module;
+        $moduleNamespace = $this->moduleEntity->getNamespace();
         $srcPath = $this->getSourcePath($resourceName);
 
         $className = sprintf('%sResource', $resourceName);
@@ -565,6 +565,7 @@ class DoctrineRestServiceModel implements EventManagerAwareInterface, ServiceMan
 
         $view = new ViewModel(array(
             'module'    => $module,
+            'namespace' => $moduleNamespace,
             'resource'  => $resourceName,
             'classname' => $className,
             'details'   => $details,
@@ -580,7 +581,7 @@ class DoctrineRestServiceModel implements EventManagerAwareInterface, ServiceMan
 
         $fullClassName = sprintf(
             '%s\\V%s\\Rest\\%s\\%s',
-            $module,
+            $moduleNamespace,
             $this->moduleEntity->getLatestVersion(),
             $resourceName,
             $className
@@ -598,6 +599,7 @@ class DoctrineRestServiceModel implements EventManagerAwareInterface, ServiceMan
     public function createCollectionClass($resourceName)
     {
         $module     = $this->module;
+        $moduleNamespace = $this->moduleEntity->getNamespace();
         $srcPath    = $this->getSourcePath($resourceName);
 
         $className  = sprintf('%sCollection', $resourceName);
@@ -612,6 +614,7 @@ class DoctrineRestServiceModel implements EventManagerAwareInterface, ServiceMan
 
         $view = new ViewModel(array(
             'module'    => $module,
+            'namespace' => $moduleNamespace,
             'resource'  => $resourceName,
             'classname' => $className,
             'version'   => $this->moduleEntity->getLatestVersion(),
@@ -626,7 +629,7 @@ class DoctrineRestServiceModel implements EventManagerAwareInterface, ServiceMan
 
         $fullClassName = sprintf(
             '%s\\V%s\\Rest\\%s\\%s',
-            $module,
+            $moduleNamespace,
             $this->moduleEntity->getLatestVersion(),
             $resourceName,
             $className
