@@ -253,6 +253,7 @@ class DoctrineRpcServiceModel
     public function createController($serviceName)
     {
         $module     = $this->module;
+        $moduleNamespace = $this->moduleEntity->getNamespace();
         $version    = $this->moduleEntity->getLatestVersion();
         $serviceName = str_replace("\\", "/", $serviceName);
 
@@ -264,7 +265,7 @@ class DoctrineRpcServiceModel
 
         $className         = sprintf('%sController', $serviceName);
         $classPath         = sprintf('%s/%s.php', $srcPath, $className);
-        $controllerService = sprintf('%s\\V%s\\Rpc\\%s\\Controller', $module, $version, $serviceName);
+        $controllerService = sprintf('%s\\V%s\\Rpc\\%s\\Controller', $moduleNamespace, $version, $serviceName);
 
         if (file_exists($classPath)) {
             throw new Exception\RuntimeException(sprintf(
@@ -275,6 +276,7 @@ class DoctrineRpcServiceModel
 
         $view = new ViewModel(array(
             'module'      => $module,
+            'namespace'   => $moduleNamespace,
             'classname'   => $className,
             'servicename' => $serviceName,
             'version'     => $version,
@@ -295,7 +297,7 @@ class DoctrineRpcServiceModel
             return false;
         }
 
-        $fullClassName = sprintf('%s\\V%s\\Rpc\\%s\\%s', $module, $version, $serviceName, $className);
+        $fullClassName = sprintf('%s\\V%s\\Rpc\\%s\\%s', $moduleNamespace, $version, $serviceName, $className);
         $this->configResource->patch(
             array(
             'controllers' => array(
@@ -408,7 +410,7 @@ class DoctrineRpcServiceModel
     {
         if (null === $controllerService) {
             // @codeCoverageIgnoreStart
-            $controllerService = sprintf('%s\\Rpc\\%s\\Controller', $this->module, $serviceName);
+            $controllerService = sprintf('%s\\Rpc\\%s\\Controller', $this->moduleEntity->getNamespace(), $serviceName);
         }
             // @codeCoverageIgnoreEnd
 
