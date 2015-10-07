@@ -359,7 +359,7 @@ class DoctrineRestServiceModel implements EventManagerAwareInterface, ServiceMan
     {
         return sprintf(
             '%s\\V%s\\Rest\\%s\\%sHydrator',
-            $this->module,
+            $this->moduleEntity->getNamespace(),
             $this->moduleEntity->getLatestVersion(),
             $resourceName,
             $resourceName
@@ -535,7 +535,7 @@ class DoctrineRestServiceModel implements EventManagerAwareInterface, ServiceMan
     {
         return sprintf(
             '%s\\V%s\\Rest\\%s\\Controller',
-            $this->module,
+            $this->moduleEntity->getNamespace(),
             $this->moduleEntity->getLatestVersion(),
             $resourceName
         );
